@@ -5,53 +5,57 @@ search_btn.addEventListener("click", load_php);
     //alert("Hello World");
  function load_php(){
 
+    var userInput = document.getElementById('name').value;
+     // Sanitize the user input to prevent XSS attacks
+     var sanitizedInput = encodeURIComponent(userInput);
+
     var xhr = new XMLHttpRequest();
 
-   /* xhr.onreadystatechange = function(){
-        if (xhr.readyState === XMLHttpRequest.DONE){
-            if (xhr.status === 200){
-                alert(xhr.responseText)
-            }
-            else{
-                alert("Error")
-            }
-        }
-    }
-    xhr.open('GET', 'superheroes.php', true);
-    */
+
     xhr.onload = function(){
         if(xhr.status == 200){
-            //console.log(this.response);
-            alert(xhr.responseText);
+            //alert(xhr.responseText);
+            //console.log(displaySuperhero(response));
+            //alert(response);
+            document.getElementById('result').innerHTML = xhr.responseText;
+            var response = xhr.responseText;
+            //console.log(response);
+            if (response.error) {
+                document.getElementById('result').innerHTML = "<p>Superhero not found</p>";
+            } else {
+                 displaySuperhero(response);
+            }
 
         }
+        
+       
     }
-    
-    xhr.open('GET', 'superheroes.php', true);
+    // Construct the URL with the sanitized search query as a query parameter
+    var url = 'superheroes.php?alias=' + sanitizedInput;
+    console.log(url);
+    xhr.open('GET', url, true);
     xhr.send(); 
 
  }
 
-/*
-    let search_btn = document.getElementById("searchBtn");
-    var xhr;
 
-    search_btn.addEventListener("click", function(e){
-        e.preventDefault()
-        xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function(){
-            if(xhr.readyState === XMLHttpRequest.DONE){
-                if(xhr.status === 200){
-                    alert(xhr.responseText)
-                }
-                else{
-                    alert("error")
-                }
-            }
-        };
-        xhr.open("GET", "superheroes.php");
-        xhr.send();
-    })
+    function displaySuperhero(superhero) {
+        var resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = ""; // Clear previous content
 
-   */
+        // Create HTML elements to display the superhero information
+        var aliasHeading = document.createElement('h3');
+        aliasHeading.textContent = superhero.alias;
+
+        var nameHeading = document.createElement('h4');
+        nameHeading.textContent = superhero.name;
+
+        var biographyParagraph = document.createElement('p');
+        biographyParagraph.textContent = superhero.biography;
+
+        // Append the created elements to the result div
+        resultDiv.appendChild(aliasHeading);
+        resultDiv.appendChild(nameHeading);
+        resultDiv.appendChild(biographyParagraph);
+    }
 }

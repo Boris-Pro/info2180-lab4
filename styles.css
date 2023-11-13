@@ -10,5 +10,25 @@
 }
 
 input{
-    width: 400px;
+    width: 800px;
+    height: 40px;
+
 }
+header{
+    text-align: center;
+    background: blue;
+    color: white;
+}
+.searcharea{
+    display:grid;
+    grid-template-columns: 85% 15%;
+    padding: 3px;
+}
+.btn{
+    background: red;
+    color: white;
+    height: 45px;
+    width: 100px;
+    border-radius: 5px;
+}
+
